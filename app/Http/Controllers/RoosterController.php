@@ -35,38 +35,26 @@ class RoosterController extends Controller
         $command[0] = stripslashes($command[0]);
 //        $this->telegram->sendMessage($this->chatId, $command);
 //        return 'ok';
-        $customKeyboard = true;
         if($command[0] == '/start'){
             $result = $this->getStarted();
-            $customKeyboard = true;
         }elseif($command[0] == '/class'){
             $result = $this->setClass($command[1]);
-            $customKeyboard = false;
         }elseif($command[0] == '/today'){
             $result = $this->getToday();
-            $customKeyboard = true;
         }elseif($command[0] == '/tomorrow'){
             $result = $this->getTomorrow();
-            $customKeyboard = true;
         }elseif($command[0] == '/week'){
             $result = $this->getWeekly();
-            $customKeyboard = true;
         }elseif($command[0] == '/nextweek'){
             $result = $this->getNextWeek();
-            $customKeyboard = true;
         }
 
         if(!$result){
             $result = $this->invalidRequest();
-            $customKeyboard = false;
         }
 
-        if($customKeyboard){
-            $reply_markup = $this->telegram->replyKeyboardMarkup($this->keyboard, true, true);
-            $this->telegram->sendMessage($this->chatId, $result, false, null, $reply_markup);
-        }else {
-            $this->telegram->sendMessage($this->chatId, $result);
-        }
+        $reply_markup = $this->telegram->replyKeyboardMarkup($this->keyboard, true, true);
+        $this->telegram->sendMessage($this->chatId, $result, false, null, $reply_markup);
     }
 
     public function getStarted()
