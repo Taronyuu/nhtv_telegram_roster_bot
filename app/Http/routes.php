@@ -1,3 +1,3 @@
 <?php
 
-Route::get('/today', 'TodayRosterController@today');
+Route::post('/message', 'RosterController@message');
