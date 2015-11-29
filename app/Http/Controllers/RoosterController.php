@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Command;
 use App\Http\Controllers\Controller;
 use App\User;
 use Carbon\Carbon;
@@ -57,6 +58,12 @@ class RoosterController extends Controller
 
         if(!$result){
             $result = $this->invalidRequest();
+        }else{
+            $data = [
+                'user_id' => $this->chatId,
+                'command' => str_replace('/', '', $command[0])
+            ];
+            Command::create($data);
         }
 
 //        $start = Carbon::now()->addDays(3)->startOfDay()->timestamp;
