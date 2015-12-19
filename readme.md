@@ -19,4 +19,6 @@ If you still want to run your own it isn't hard.
 8. Setup your webserver
 9. Use it. :)
 
+## Contact
 
+You can contact me via the bot or send me a message here.
