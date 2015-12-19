@@ -1,21 +1,22 @@
-## Lumen PHP Framework
+## NHTV Telegram Roster Bot
 
-[![Build Status](https://travis-ci.org/laravel/lumen-framework.svg)](https://travis-ci.org/laravel/lumen-framework)
-[![Total Downloads](https://poser.pugx.org/laravel/lumen-framework/d/total.svg)](https://packagist.org/packages/laravel/lumen-framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/lumen-framework/v/stable.svg)](https://packagist.org/packages/laravel/lumen-framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/lumen-framework/v/unstable.svg)](https://packagist.org/packages/laravel/lumen-framework)
-[![License](https://poser.pugx.org/laravel/lumen-framework/license.svg)](https://packagist.org/packages/laravel/lumen-framework)
+Easiest way to create your own roster bot and get updates via your phone. (Without having another application)
 
-Laravel Lumen is a stunningly fast PHP micro-framework for building web applications with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Lumen attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as routing, database abstraction, queueing, and caching.
+## Use
 
-## Official Documentation
+This bot is already running, search for @nhtv_roster_bot or [click here](https://telegram.me/nhtv_roster_bot)
 
-Documentation for the framework can be found on the [Lumen website](http://lumen.laravel.com/docs).
+## Installation
 
-## Security Vulnerabilities
+If you still want to run your own it isn't hard.
+1. Clone this repo
+2. Install composer and run install `composer install`
+3. Create a MySQL database
+4. Copy `.env.example` to `.env` and fill in your MySQL details
+5. Create your own bot using @BotFather (or [click here](https://telegram.me/BotFather))
+6. Fill in your own bot token from Telegram
+7. Register your webhook [here](https://core.telegram.org/bots/api#setwebhook)
+8. Setup your webserver
+9. Use it. :)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
 
-### License
-
-The Lumen framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
