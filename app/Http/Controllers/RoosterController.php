@@ -22,6 +22,10 @@ class RoosterController extends Controller
         ['/nextweek', '/contact']
     ];
 
+    /**
+     * RoosterController constructor.
+     * Initialize the Telegram package
+     */
     public function __construct()
     {
         $this->telegram = new Api(env('TELEGRAM_BOT_TOKEN'));
@@ -31,13 +35,17 @@ class RoosterController extends Controller
         $this->command  = $this->response['message']['text'];
     }
 
+    /**
+     * Here we'll decide what command the user wants.
+     * This isn't the way the packages wants to work, but I like
+     * to do it my own way and be more flexible in the future
+     */
     public function message()
     {
         $result = false;
         $command = (explode(" ", $this->command, 2));
         $command[0] = stripslashes($command[0]);
-//        $this->telegram->sendMessage($this->chatId, $command);
-//        return 'ok';
+
         if($command[0] == '/start'){
             $result = $this->getStarted();
         }elseif($command[0] == '/class') {
@@ -56,9 +64,11 @@ class RoosterController extends Controller
             $result = $this->getContact();
         }
 
+        //If no valid command has been given
         if(!$result){
             $result = $this->invalidRequest();
         }else{
+            //Create new command (for logging purposes)
             $data = [
                 'user_id' => $this->chatId,
                 'command' => str_replace('/', '', $command[0])
@@ -66,14 +76,20 @@ class RoosterController extends Controller
             Command::create($data);
         }
 
-//        $start = Carbon::now()->addDays(3)->startOfDay()->timestamp;
-//        $end = Carbon::now()->addDays(3)->endOfDay()->timestamp;
-//        $user = User::find(1);
-//        $result = $this->sendMessage($user, $start, $end);
+        //Reply with a message
         $reply_markup = $this->telegram->replyKeyboardMarkup($this->keyboard, true, false);
         $this->telegram->sendMessage($this->chatId, $result, false, null, $reply_markup);
     }
 
+    /**
+     * This is the place where all data is being requested
+     * and parsed into a nice reply
+     *
+     * @param $user
+     * @param $start
+     * @param $end
+     * @return string
+     */
     public function sendMessage($user, $start, $end)
     {
         $query = http_build_query([
@@ -103,11 +119,22 @@ class RoosterController extends Controller
         return $message;
     }
 
+    /**
+     * Starting reply
+     *
+     * @return string
+     */
     public function getStarted()
     {
         return  "Hello there!\n\nPlease enter your class using /class to get started.\n\nExample: /class 1 A- 1 ISD\n\n(Due to the implementation of your college's api you must include spaces)";
     }
 
+    /**
+     * Save the class with the chat ID
+     *
+     * @param int $arg
+     * @return bool|string
+     */
     public function setClass($arg = 0)
     {
         if(!$arg){
@@ -129,6 +156,11 @@ class RoosterController extends Controller
         return "Class has been succesfully saved.\n\nRemember: If you can't find any rosters use the /class <classname> again to set the right class.";
     }
 
+    /**
+     * Get current activities
+     *
+     * @return bool|string
+     */
     public function getNow()
     {
         $user = User::where('chat_id', $this->chatId)->first();
@@ -157,6 +189,11 @@ class RoosterController extends Controller
         return $message;
     }
 
+    /**
+     * Get activities planned for today
+     *
+     * @return string
+     */
     public function getToday()
     {
         $user = User::where('chat_id', $this->chatId)->first();
@@ -169,6 +206,11 @@ class RoosterController extends Controller
         return $this->sendMessage($user, $start, $end);
     }
 
+    /**
+     * Get activities planned for tomorrow
+     *
+     * @return string
+     */
     public function getTomorrow()
     {
         $user = User::where('chat_id', $this->chatId)->first();
@@ -181,6 +223,11 @@ class RoosterController extends Controller
         return $this->sendMessage($user, $start, $end);
     }
 
+    /**
+     * Get activities planned for this week
+     *
+     * @return string
+     */
     public function getWeekly()
     {
         $user = User::where('chat_id', $this->chatId)->first();
@@ -193,6 +240,11 @@ class RoosterController extends Controller
         return $this->sendMessage($user, $start, $end);
     }
 
+    /**
+     * Get activities planned for next week
+     *
+     * @return string
+     */
     public function getNextWeek()
     {
         $user = User::where('chat_id', $this->chatId)->first();
@@ -205,11 +257,21 @@ class RoosterController extends Controller
         return $this->sendMessage($user, $start, $end);
     }
 
+    /**
+     * Get contact reply
+     *
+     * @return string
+     */
     public function getContact()
     {
         return "Hi there!\n\nIf you have any questions, suggestions or anything else that I should know you can contact me by clicking here: @Zandervdm\n\nDon't worry, I won't bite. :)";
     }
 
+    /**
+     * Return an invalid command reply if no command has been foudn
+     *
+     * @return string
+     */
     public function invalidRequest()
     {
         return "Whoops, something went wrong. Are you sure this is the right command? If so, you can contact me. ";
