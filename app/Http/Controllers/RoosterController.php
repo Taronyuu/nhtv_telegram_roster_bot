@@ -31,11 +31,9 @@ class RoosterController extends Controller
     {
         $this->telegram = new Api(env('TELEGRAM_BOT_TOKEN'));
         $this->response = $this->telegram->getWebhookUpdates();
-//        $this->response = json_decode('{"update_id":422291758,"message":{"message_id":27,"from":{"id":15775927,"first_name":"Zander","last_name":"van der Meer"},"chat":{"id":15775927,"first_name":"Zander","last_name":"van der Meer","type":"private"},"date":1448139513,"text":"\/test"}}', true);
+        $this->response = json_decode('{"update_id":422291758,"message":{"message_id":27,"from":{"id":15775927,"first_name":"Zander","last_name":"van der Meer"},"chat":{"id":15775927,"first_name":"Zander","last_name":"van der Meer","type":"private"},"date":1448139513,"text":"\/test"}}', true);
         $this->chatId   = $this->response['message']['chat']['id'];
         $this->command  = $this->response['message']['text'];
-
-        Log::info('class created');
     }
 
     /**
@@ -48,8 +46,6 @@ class RoosterController extends Controller
         $result = false;
         $command = (explode(" ", $this->command, 2));
         $command[0] = stripslashes($command[0]);
-
-        Log::info('message received');
 
         if($command[0] == '/start'){
             $result = $this->getStarted();
