@@ -6,6 +6,7 @@ use App\Command;
 use App\Http\Controllers\Controller;
 use App\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 use Telegram\Bot\Api;
 
 class RoosterController extends Controller
